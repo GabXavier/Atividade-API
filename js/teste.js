@@ -2,7 +2,7 @@ var conteudo = document.getElementById('conteudoPersonagem');
 
 var botaoPesquisar = document.getElementById('pesquisar');
 
-// Retorna todos os personagens
+// Função para Retornar todos os personagens
 const getPersonagem = async function(){
     let url ='https://rickandmortyapi.com/api/character';
     
@@ -15,7 +15,7 @@ const getPersonagem = async function(){
     })
 };
 
-// Retorna os livros filtrando pelo nome
+// Função para Retornar os personagens filtrando pelo nome
 const getPersonagemByName = function(nomePersonagem){
     let url=`https://rickandmortyapi.com/api/character/?name=${nomePersonagem}`;
 
@@ -28,7 +28,7 @@ const getPersonagemByName = function(nomePersonagem){
     })
 }
 
-// Cria todos os card no HTML 
+// Cria todos os card no HTML
 const creatCard = async function(dados){
 
     dados.results.forEach(async function(item){
@@ -68,11 +68,25 @@ const creatCard = async function(dados){
         // Criando o elemento h3 para primeira vez
         let h3FirstSeen = document.createElement('h3')
 
-
+        
         // Cria o texto nome do personagem h2
         let nomePersonagem = document.createTextNode(item.name);
 
         let status = document.createTextNode(item.status + ' - ' + item.species);
+
+        //Teste de validação Vivo ou Morto
+
+        if (item.status == "Dead") {
+            spanStatus.setAttribute('class', 'statusVermelho')
+        }else if(item.status == "Alive"){
+            spanStatus.setAttribute('class', 'statusVerde')
+        }else{
+            spanStatus.setAttribute('class', 'statusUnknown')
+        }
+        
+        //Arrumar o CSS - Alive and Dead
+        
+
 
         // Cria o texto do LastLocation e firstSeen
         let txtLastLocation = document.createTextNode('Last Known Location')
@@ -81,9 +95,9 @@ const creatCard = async function(dados){
 
         let txtFirstSeen = document.createTextNode('First seen In')
 
-        
         const response = await fetch(item.episode);
         const teste = await response.json();
+        
         let h3TxtFirstSeen = document.createTextNode(teste.name);
 
 
@@ -105,8 +119,9 @@ const creatCard = async function(dados){
 
        // ASSOCIA OS TEXTOS NOS ELEMENTOS 
 
+       spanStatus.innerText = status.nodeValue;
+
        h2.appendChild(nomePersonagem);
-       spanStatus.appendChild(status);
        spanLocation.appendChild(txtLastLocation);
        h3LastLocation.appendChild(h3TxtLastLocation);
        spanFirstSeen.appendChild(txtFirstSeen);
